@@ -5,10 +5,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 
 import Landing from "./pages/Landing";
 import Login from "./pages/auth/Login";
-import Signup from "./pages/auth/Signup";
+import Register from "./pages/auth/Register";
+import ResetPassword from "./pages/auth/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 import StudentLayout from "./components/layouts/StudentLayout";
@@ -36,8 +38,13 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+
+            {/* Legacy routes redirect */}
             <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/signup" element={<Signup />} />
+            <Route path="/auth/signup" element={<Register />} />
 
             {/* Student Portal */}
             <Route path="/app" element={<ProtectedRoute><StudentLayout /></ProtectedRoute>}>
@@ -50,7 +57,7 @@ const App = () => (
 
             {/* Admin Portal */}
             <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+            <Route path="/admin" element={<AdminProtectedRoute><AdminLayout /></AdminProtectedRoute>}>
               <Route index element={<AdminDashboard />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="analytics" element={<AdminAnalytics />} />

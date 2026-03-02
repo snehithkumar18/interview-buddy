@@ -3,24 +3,65 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { AuthProvider } from "@/hooks/useAuth";
+import ProtectedRoute from "@/components/ProtectedRoute";
+
+import Landing from "./pages/Landing";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
 import NotFound from "./pages/NotFound";
+
+import StudentLayout from "./components/layouts/StudentLayout";
+import Dashboard from "./pages/app/Dashboard";
+import NewInterview from "./pages/app/NewInterview";
+import InterviewHistory from "./pages/app/InterviewHistory";
+import Credits from "./pages/app/Credits";
+import ProfilePage from "./pages/app/ProfilePage";
+
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./components/layouts/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/signup" element={<Signup />} />
+
+            {/* Student Portal */}
+            <Route path="/app" element={<ProtectedRoute><StudentLayout /></ProtectedRoute>}>
+              <Route index element={<Dashboard />} />
+              <Route path="new-interview" element={<NewInterview />} />
+              <Route path="history" element={<InterviewHistory />} />
+              <Route path="credits" element={<Credits />} />
+              <Route path="profile" element={<ProfilePage />} />
+            </Route>
+
+            {/* Admin Portal */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

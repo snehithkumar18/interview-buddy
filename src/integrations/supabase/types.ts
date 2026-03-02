@@ -14,7 +14,168 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_users: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      credit_transactions: {
+        Row: {
+          amount_paid: number | null
+          created_at: string | null
+          credits_added: number
+          currency: string | null
+          id: string
+          payment_id: string | null
+          payment_provider: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_paid?: number | null
+          created_at?: string | null
+          credits_added: number
+          currency?: string | null
+          id?: string
+          payment_id?: string | null
+          payment_provider?: string | null
+          user_id: string
+        }
+        Update: {
+          amount_paid?: number | null
+          created_at?: string | null
+          credits_added?: number
+          currency?: string | null
+          id?: string
+          payment_id?: string | null
+          payment_provider?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      interviews: {
+        Row: {
+          ai_summary: string | null
+          company_name: string
+          created_at: string | null
+          credits_used: number | null
+          duration_minutes: number | null
+          experience_level: string
+          id: string
+          improvements: Json | null
+          job_description: string | null
+          retell_call_id: string | null
+          role: string
+          score_behavioral: number | null
+          score_communication: number | null
+          score_problem_solving: number | null
+          score_technical: number | null
+          score_total: number | null
+          status: string | null
+          strengths: Json | null
+          transcript: Json | null
+          user_id: string
+        }
+        Insert: {
+          ai_summary?: string | null
+          company_name: string
+          created_at?: string | null
+          credits_used?: number | null
+          duration_minutes?: number | null
+          experience_level: string
+          id?: string
+          improvements?: Json | null
+          job_description?: string | null
+          retell_call_id?: string | null
+          role: string
+          score_behavioral?: number | null
+          score_communication?: number | null
+          score_problem_solving?: number | null
+          score_technical?: number | null
+          score_total?: number | null
+          status?: string | null
+          strengths?: Json | null
+          transcript?: Json | null
+          user_id: string
+        }
+        Update: {
+          ai_summary?: string | null
+          company_name?: string
+          created_at?: string | null
+          credits_used?: number | null
+          duration_minutes?: number | null
+          experience_level?: string
+          id?: string
+          improvements?: Json | null
+          job_description?: string | null
+          retell_call_id?: string | null
+          role?: string
+          score_behavioral?: number | null
+          score_communication?: number | null
+          score_problem_solving?: number | null
+          score_technical?: number | null
+          score_total?: number | null
+          status?: string | null
+          strengths?: Json | null
+          transcript?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          college: string | null
+          created_at: string | null
+          credits_balance: number
+          email: string
+          full_name: string
+          graduation_year: number | null
+          id: string
+          phone: string | null
+          resume_url: string | null
+          total_interviews: number
+          user_id: string
+        }
+        Insert: {
+          college?: string | null
+          created_at?: string | null
+          credits_balance?: number
+          email: string
+          full_name: string
+          graduation_year?: number | null
+          id?: string
+          phone?: string | null
+          resume_url?: string | null
+          total_interviews?: number
+          user_id: string
+        }
+        Update: {
+          college?: string | null
+          created_at?: string | null
+          credits_balance?: number
+          email?: string
+          full_name?: string
+          graduation_year?: number | null
+          id?: string
+          phone?: string | null
+          resume_url?: string | null
+          total_interviews?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

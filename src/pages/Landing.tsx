@@ -3,21 +3,9 @@ import { Sparkles, Mic, BarChart3, Zap, ArrowRight, CheckCircle } from "lucide-r
 import { Button } from "@/components/ui/button";
 
 const features = [
-  {
-    icon: Mic,
-    title: "AI-Powered Interviews",
-    description: "Practice with realistic AI interviewers tailored to your target role and company.",
-  },
-  {
-    icon: BarChart3,
-    title: "Detailed Analytics",
-    description: "Get scored on communication, technical skills, behavior, and problem-solving.",
-  },
-  {
-    icon: Zap,
-    title: "Instant Feedback",
-    description: "Receive actionable insights and improvement suggestions after every session.",
-  },
+  { icon: Mic, title: "AI-Powered Interviews", description: "Practice with realistic AI interviewers tailored to your target role and company." },
+  { icon: BarChart3, title: "Detailed Analytics", description: "Get scored on communication, technical skills, behavior, and problem-solving." },
+  { icon: Zap, title: "Instant Feedback", description: "Receive actionable insights and improvement suggestions after every session." },
 ];
 
 const benefits = [
@@ -40,11 +28,11 @@ export default function Landing() {
             <span className="text-xl font-bold gradient-text">InterviewAI</span>
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/auth/login">
+            <Link to="/login">
               <Button variant="ghost" size="sm">Sign In</Button>
             </Link>
-            <Link to="/auth/signup">
-              <Button size="sm" className="bg-primary hover:bg-primary/90">Get Started</Button>
+            <Link to="/register">
+              <Button size="sm" className="glow-primary" style={{ background: "var(--gradient-primary)" }}>Get Started Free</Button>
             </Link>
           </div>
         </div>
@@ -60,23 +48,23 @@ export default function Landing() {
             AI-Powered Interview Practice
           </div>
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-            Ace Your Next
+            Practice AI Interviews.
             <br />
-            <span className="gradient-text">Interview</span>
+            <span className="gradient-text">Get Hired Faster.</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in" style={{ animationDelay: "0.2s" }}>
             Practice with AI interviewers, get real-time feedback, and track your improvement. Built for students who want to land their dream job.
           </p>
           <div className="flex items-center justify-center gap-4 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <Link to="/auth/signup">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 glow-primary px-8">
-                Start Practicing Free
+            <Link to="/register">
+              <Button size="lg" className="glow-primary px-8" style={{ background: "var(--gradient-primary)" }}>
+                Get Started Free
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link to="/admin/login">
+            <Link to="/login">
               <Button size="lg" variant="outline" className="border-border hover:bg-muted">
-                Admin Portal
+                Sign In
               </Button>
             </Link>
           </div>
@@ -119,34 +107,22 @@ export default function Landing() {
             </div>
             <div className="glass-card rounded-lg p-8">
               <div className="space-y-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Communication</span>
-                  <span className="font-semibold text-primary">92%</span>
-                </div>
-                <div className="h-2 rounded-full bg-muted overflow-hidden">
-                  <div className="h-full w-[92%] rounded-full bg-primary" />
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Technical</span>
-                  <span className="font-semibold text-secondary">85%</span>
-                </div>
-                <div className="h-2 rounded-full bg-muted overflow-hidden">
-                  <div className="h-full w-[85%] rounded-full bg-secondary" />
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Behavioral</span>
-                  <span className="font-semibold text-success">88%</span>
-                </div>
-                <div className="h-2 rounded-full bg-muted overflow-hidden">
-                  <div className="h-full w-[88%] rounded-full bg-success" />
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Problem Solving</span>
-                  <span className="font-semibold text-warning">79%</span>
-                </div>
-                <div className="h-2 rounded-full bg-muted overflow-hidden">
-                  <div className="h-full w-[79%] rounded-full bg-warning" />
-                </div>
+                {[
+                  { label: "Communication", pct: 92, color: "bg-primary" },
+                  { label: "Technical", pct: 85, color: "bg-secondary" },
+                  { label: "Behavioral", pct: 88, color: "bg-success" },
+                  { label: "Problem Solving", pct: 79, color: "bg-warning" },
+                ].map(({ label, pct, color }) => (
+                  <div key={label}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-muted-foreground">{label}</span>
+                      <span className="font-semibold">{pct}%</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-muted overflow-hidden">
+                      <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

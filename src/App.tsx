@@ -49,8 +49,11 @@ const App = () => (
             {/* Student Portal */}
             <Route path="/app" element={<ProtectedRoute><StudentLayout /></ProtectedRoute>}>
               <Route index element={<Dashboard />} />
+              <Route path="dashboard" element={<Dashboard />} />
               <Route path="new-interview" element={<NewInterview />} />
+              <Route path="interview/setup" element={<NewInterview />} />
               <Route path="history" element={<InterviewHistory />} />
+              <Route path="reports" element={<InterviewHistory />} />
               <Route path="credits" element={<Credits />} />
               <Route path="profile" element={<ProfilePage />} />
             </Route>

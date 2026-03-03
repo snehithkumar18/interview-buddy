@@ -44,7 +44,7 @@ export default function NewInterview() {
   const [companyName, setCompanyName] = useState("");
   const [industry, setIndustry] = useState("");
   const [experienceLevel, setExperienceLevel] = useState("");
-  const [language, setLanguage] = useState(profile?.preferred_language ?? "English");
+  const [language, setLanguage] = useState("English");
   const [jobDescription, setJobDescription] = useState("");
   const [mode, setMode] = useState<"voice" | "text" | "">("");
 

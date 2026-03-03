@@ -19,16 +19,19 @@ export type Database = {
           created_at: string | null
           email: string
           id: string
+          name: string | null
         }
         Insert: {
           created_at?: string | null
           email: string
           id?: string
+          name?: string | null
         }
         Update: {
           created_at?: string | null
           email?: string
           id?: string
+          name?: string | null
         }
         Relationships: []
       }
@@ -39,8 +42,10 @@ export type Database = {
           credits_added: number
           currency: string | null
           id: string
+          package_name: string | null
           payment_id: string | null
           payment_provider: string | null
+          type: string
           user_id: string
         }
         Insert: {
@@ -49,8 +54,10 @@ export type Database = {
           credits_added: number
           currency?: string | null
           id?: string
+          package_name?: string | null
           payment_id?: string | null
           payment_provider?: string | null
+          type?: string
           user_id: string
         }
         Update: {
@@ -59,8 +66,10 @@ export type Database = {
           credits_added?: number
           currency?: string | null
           id?: string
+          package_name?: string | null
           payment_id?: string | null
           payment_provider?: string | null
+          type?: string
           user_id?: string
         }
         Relationships: []
@@ -75,7 +84,9 @@ export type Database = {
           experience_level: string
           id: string
           improvements: Json | null
+          interview_language: string | null
           job_description: string | null
+          mode: string | null
           retell_call_id: string | null
           role: string
           score_behavioral: number | null
@@ -97,7 +108,9 @@ export type Database = {
           experience_level: string
           id?: string
           improvements?: Json | null
+          interview_language?: string | null
           job_description?: string | null
+          mode?: string | null
           retell_call_id?: string | null
           role: string
           score_behavioral?: number | null
@@ -119,7 +132,9 @@ export type Database = {
           experience_level?: string
           id?: string
           improvements?: Json | null
+          interview_language?: string | null
           job_description?: string | null
+          mode?: string | null
           retell_call_id?: string | null
           role?: string
           score_behavioral?: number | null
@@ -136,41 +151,59 @@ export type Database = {
       }
       profiles: {
         Row: {
+          city: string | null
           college: string | null
+          country: string | null
+          country_code: string | null
           created_at: string | null
           credits_balance: number
           email: string
           full_name: string
           graduation_year: number | null
           id: string
+          linkedin_url: string | null
           phone: string | null
+          preferred_language: string | null
           resume_url: string | null
+          timezone: string | null
           total_interviews: number
           user_id: string
         }
         Insert: {
+          city?: string | null
           college?: string | null
+          country?: string | null
+          country_code?: string | null
           created_at?: string | null
           credits_balance?: number
           email: string
           full_name: string
           graduation_year?: number | null
           id?: string
+          linkedin_url?: string | null
           phone?: string | null
+          preferred_language?: string | null
           resume_url?: string | null
+          timezone?: string | null
           total_interviews?: number
           user_id: string
         }
         Update: {
+          city?: string | null
           college?: string | null
+          country?: string | null
+          country_code?: string | null
           created_at?: string | null
           credits_balance?: number
           email?: string
           full_name?: string
           graduation_year?: number | null
           id?: string
+          linkedin_url?: string | null
           phone?: string | null
+          preferred_language?: string | null
           resume_url?: string | null
+          timezone?: string | null
           total_interviews?: number
           user_id?: string
         }

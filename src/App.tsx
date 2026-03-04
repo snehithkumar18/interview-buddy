@@ -19,6 +19,7 @@ import NewInterview from "./pages/app/NewInterview";
 import InterviewHistory from "./pages/app/InterviewHistory";
 import Credits from "./pages/app/Credits";
 import ProfilePage from "./pages/app/ProfilePage";
+import VoiceInterviewRoom from "./pages/app/VoiceInterviewRoom";
 
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./components/layouts/AdminLayout";
@@ -57,6 +58,9 @@ const App = () => (
               <Route path="credits" element={<Credits />} />
               <Route path="profile" element={<ProfilePage />} />
             </Route>
+
+            {/* Interview Room (full screen, no sidebar) */}
+            <Route path="/app/interview/room" element={<ProtectedRoute><VoiceInterviewRoom /></ProtectedRoute>} />
 
             {/* Admin Portal */}
             <Route path="/admin/login" element={<AdminLogin />} />

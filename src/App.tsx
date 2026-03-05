@@ -21,6 +21,7 @@ import Credits from "./pages/app/Credits";
 import ProfilePage from "./pages/app/ProfilePage";
 import VoiceInterviewRoom from "./pages/app/VoiceInterviewRoom";
 import TextInterviewRoom from "./pages/app/TextInterviewRoom";
+import InterviewReport from "./pages/app/InterviewReport";
 
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./components/layouts/AdminLayout";
@@ -63,6 +64,7 @@ const App = () => (
             {/* Interview Rooms (full screen, no sidebar) */}
             <Route path="/app/interview/room" element={<ProtectedRoute><VoiceInterviewRoom /></ProtectedRoute>} />
             <Route path="/app/interview/text" element={<ProtectedRoute><TextInterviewRoom /></ProtectedRoute>} />
+            <Route path="/app/report" element={<ProtectedRoute><InterviewReport /></ProtectedRoute>} />
 
             {/* Admin Portal */}
             <Route path="/admin/login" element={<AdminLogin />} />

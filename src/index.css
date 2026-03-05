@@ -81,3 +81,25 @@
     box-shadow: var(--shadow-glow);
   }
 }
+
+@media print {
+  nav, .sidebar, [data-sidebar], header, footer {
+    display: none !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+  .print\:block {
+    display: block !important;
+  }
+  .print\:max-h-none {
+    max-height: none !important;
+  }
+  .print\:bg-white {
+    background: white !important;
+    color: black !important;
+  }
+  body {
+    background: white !important;
+  }
+}

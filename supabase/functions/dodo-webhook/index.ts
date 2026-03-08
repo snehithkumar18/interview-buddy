@@ -1,12 +1,19 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { hmac } from "https://deno.land/x/hmac@v2.0.1/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "content-type, webhook-id, webhook-signature, webhook-timestamp",
 };
 
-function verifyWebhookSignature(body: string, headers: Headers): boolean {
+async function computeHmacSha256(key: Uint8Array, message: string): Promise<string> {
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw", key, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
+  );
+  const signature = await crypto.subtle.sign("HMAC", cryptoKey, new TextEncoder().encode(message));
+  return btoa(String.fromCharCode(...new Uint8Array(signature)));
+}
+
+async function verifyWebhookSignature(body: string, headers: Headers): Promise<boolean> {
   const secret = Deno.env.get("DODO_WEBHOOK_SECRET");
   if (!secret) {
     console.error("DODO_WEBHOOK_SECRET not configured");
@@ -22,7 +29,6 @@ function verifyWebhookSignature(body: string, headers: Headers): boolean {
     return false;
   }
 
-  // Check timestamp to prevent replay attacks (5 min tolerance)
   const now = Math.floor(Date.now() / 1000);
   const ts = parseInt(webhookTimestamp, 10);
   if (Math.abs(now - ts) > 300) {
@@ -30,18 +36,10 @@ function verifyWebhookSignature(body: string, headers: Headers): boolean {
     return false;
   }
 
-  // Dodo uses base64-encoded secret prefixed with "whsec_"
   const secretBytes = Uint8Array.from(atob(secret.replace("whsec_", "")), (c) => c.charCodeAt(0));
   const signedContent = `${webhookId}.${webhookTimestamp}.${body}`;
+  const computedSignature = await computeHmacSha256(secretBytes, signedContent);
 
-  const encoder = new TextEncoder();
-  const key = secretBytes;
-  const message = encoder.encode(signedContent);
-
-  // Compute HMAC-SHA256
-  const computedSignature = hmac("sha256", key, message, "utf8", "base64");
-
-  // Dodo sends multiple signatures separated by space, each prefixed with "v1,"
   const signatures = webhookSignature.split(" ");
   for (const sig of signatures) {
     const sigValue = sig.replace("v1,", "");

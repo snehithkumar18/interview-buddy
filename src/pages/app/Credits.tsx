@@ -54,15 +54,30 @@ const packages = [
 export default function Credits() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
+  const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isINR, setIsINR] = useState(true);
   const [showHistory, setShowHistory] = useState(true);
+  const [buyingPkg, setBuyingPkg] = useState<string | null>(null);
+
+  // Handle return from Dodo checkout
+  useEffect(() => {
+    if (searchParams.get("success") === "true") {
+      toast.success("Credits added successfully! 🎉");
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      setSearchParams({}, { replace: true });
+    } else if (searchParams.get("cancelled") === "true") {
+      toast.info("Payment cancelled");
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (profile) {
       setIsINR(profile.country === "India" || profile.country_code === "IN");
     }
   }, [profile]);
-
   const { data: transactions } = useQuery({
     queryKey: ["transactions", user?.id],
     queryFn: async () => {

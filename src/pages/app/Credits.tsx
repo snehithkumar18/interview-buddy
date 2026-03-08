@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Zap, Mic, MessageSquare, FileText, CreditCard, ArrowUpRight, ArrowDownRight, Gift, Crown, Rocket, ChevronDown, ChevronUp } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { Zap, Mic, MessageSquare, FileText, CreditCard, ArrowUpRight, ArrowDownRight, Gift, Crown, Rocket, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { createCheckout, type PackageName } from "@/lib/dodopayments";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";

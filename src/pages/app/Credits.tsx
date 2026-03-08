@@ -232,8 +232,13 @@ export default function Credits() {
                 }`}
                 variant={pkg.variant}
                 onClick={() => handleBuy(pkg)}
+                disabled={buyingPkg === pkg.id}
               >
-                Get {pkg.name}
+                {buyingPkg === pkg.id ? (
+                  <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Processing...</>
+                ) : (
+                  `Get ${pkg.name}`
+                )}
               </Button>
             </div>
           ))}

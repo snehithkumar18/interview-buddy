@@ -92,8 +92,28 @@ export default function Credits() {
     enabled: !!user,
   });
 
-  const handleBuy = (pkg: typeof packages[0]) => {
-    toast.info("Payment integration coming soon!");
+  const handleBuy = async (pkg: typeof packages[0]) => {
+    if (!user || !profile) {
+      toast.error("Please log in to purchase credits");
+      return;
+    }
+    setBuyingPkg(pkg.id);
+    try {
+      const currency = isINR ? "INR" : "USD";
+      await createCheckout(
+        pkg.id as PackageName,
+        currency,
+        profile.email,
+        user.id,
+        profile.full_name || "User",
+        profile.country_code || (isINR ? "IN" : "US")
+      );
+    } catch (err: any) {
+      console.error("Checkout error:", err);
+      toast.error(err.message || "Failed to start checkout");
+    } finally {
+      setBuyingPkg(null);
+    }
   };
 
   const formatPrice = (pkg: typeof packages[0]) =>

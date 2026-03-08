@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Zap, Mic, MessageSquare, FileText, CreditCard, ArrowUpRight, ArrowDownRight, Gift, Crown, Rocket, ChevronDown, ChevronUp } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { Zap, Mic, MessageSquare, FileText, CreditCard, ArrowUpRight, ArrowDownRight, Gift, Crown, Rocket, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { createCheckout, type PackageName } from "@/lib/dodopayments";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -52,15 +54,30 @@ const packages = [
 export default function Credits() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
+  const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isINR, setIsINR] = useState(true);
   const [showHistory, setShowHistory] = useState(true);
+  const [buyingPkg, setBuyingPkg] = useState<string | null>(null);
+
+  // Handle return from Dodo checkout
+  useEffect(() => {
+    if (searchParams.get("success") === "true") {
+      toast.success("Credits added successfully! 🎉");
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      setSearchParams({}, { replace: true });
+    } else if (searchParams.get("cancelled") === "true") {
+      toast.info("Payment cancelled");
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (profile) {
       setIsINR(profile.country === "India" || profile.country_code === "IN");
     }
   }, [profile]);
-
   const { data: transactions } = useQuery({
     queryKey: ["transactions", user?.id],
     queryFn: async () => {
@@ -75,8 +92,28 @@ export default function Credits() {
     enabled: !!user,
   });
 
-  const handleBuy = (pkg: typeof packages[0]) => {
-    toast.info("Payment integration coming soon!");
+  const handleBuy = async (pkg: typeof packages[0]) => {
+    if (!user || !profile) {
+      toast.error("Please log in to purchase credits");
+      return;
+    }
+    setBuyingPkg(pkg.id);
+    try {
+      const currency = isINR ? "INR" : "USD";
+      await createCheckout(
+        pkg.id as PackageName,
+        currency,
+        profile.email,
+        user.id,
+        profile.full_name || "User",
+        profile.country_code || (isINR ? "IN" : "US")
+      );
+    } catch (err: any) {
+      console.error("Checkout error:", err);
+      toast.error(err.message || "Failed to start checkout");
+    } finally {
+      setBuyingPkg(null);
+    }
   };
 
   const formatPrice = (pkg: typeof packages[0]) =>
@@ -195,8 +232,13 @@ export default function Credits() {
                 }`}
                 variant={pkg.variant}
                 onClick={() => handleBuy(pkg)}
+                disabled={buyingPkg === pkg.id}
               >
-                Get {pkg.name}
+                {buyingPkg === pkg.id ? (
+                  <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Processing...</>
+                ) : (
+                  `Get ${pkg.name}`
+                )}
               </Button>
             </div>
           ))}

@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
     const body = await req.text();
 
     // Verify webhook signature
-    if (!verifyWebhookSignature(body, req.headers)) {
+    if (!(await verifyWebhookSignature(body, req.headers))) {
       return new Response(JSON.stringify({ error: "Invalid signature" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
